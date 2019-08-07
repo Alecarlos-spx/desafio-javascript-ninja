@@ -1,4 +1,7 @@
-/*
+(function(){
+    'use strict';
+
+    /*
 1. Envolva todo o conteúdo desse desafio em uma IIFE.
 2. Adicione a diretiva 'use strict';
 3. Crie um arquivo index.html e adicione esse script à ele.
@@ -12,12 +15,14 @@ variável chamada `text`:
 */
 // ?
 
+var text = 'Manuel Marques de Sousa, Conde de Porto Alegre (Rio Grande, 13 de junho de 1804 – Rio de Janeiro, 18 de julho de 1875), apelidado de "O Centauro de Luvas", foi um militar, político, abolicionista e monarquista brasileiro.';
+
 /*
 Vamos começar com umas brincadeiras fáceis :D
 Troque o nome "Manuel Marques de Sousa" pelo seu nome, e mostre o resultado
 no console:
 */
-console.log( 'Adicionando seu nome no texto:' );
+console.log( 'Adicionando seu nome no texto: ' + text.replace("Manuel Marques de Sousa", "Geovana Silva Ribeiro") );
 // ?
 
 /*
@@ -25,35 +30,39 @@ Agora, substitua a palavra "brasileiro" por sua cidade natal e mostre no
 console.
 Ex: Se você for da São Paulo, substitua por "paulista".
 */
-console.log( '\nTrocando naturalidade:' );
+console.log( '\nTrocando naturalidade: ' +  text.replace("brasileiro", "paulista"));
 // ?
 
 /*
 Substitua todos os números por um traço `-`. Cada caractere de número deve
 ser um traço. Mostre o resultado no console:
 */
-console.log( '\nTrocando números por -:' );
+console.log( '\nTrocando números por -: ' + text.replace(/\d/g, "-") );
 // ?
 
 /*
 Substitua todas as letras (somente letras) de "D" maiúsculo até "h"
 minúsculo por "0" (número zero). Mostre o resultado no console:
 */
-console.log( '\nTrocando de "D" a "h" por "0":' );
+console.log( '\nTrocando de "D" a "h" por "0": ' + text.replace(/[d-h]/gi, "0") );
 // ?
 
 /*
 Substitua todos os "A" (maiúsculos ou minúsculos) por "4".
 Mostre o resultado no console:
 */
-console.log( '\nTrocando "A" e "a" por "4":' );
+console.log( '\nTrocando "A" e "a" por "4": ' + text.replace(/[a]/gi, 4) );
 // ?
 
 /*
 Substitua a frase "O Centauro de Luvas", deixando-a em caixa alta, usando
 o método `toUpperCase()`. Mostre o resultado no console:
 */
-console.log( '\n"O Centauro de Luvas" em caixa alta:' );
+console.log( '\n"O Centauro de Luvas" em caixa alta: ' + text.replace(/(O Centauro de Luvas)/gi, function( capturaTotal, frase ){
+        return frase.toUpperCase();
+    })
+);
+
 // ?
 
 /*
@@ -69,7 +78,72 @@ Use um console.log para cada mês, usando a frase:
 "O mês de [NOME DO MÊS] é representado pelo número [NÚMERO DO MÊS]."
 */
 console.log( '\nMeses representados por números:' );
-// ?
+
+function getMonthNumber( monthName ){
+
+    let monthNumber;
+    
+    switch( monthName.toLowerCase() ){
+        case "janeiro":
+            monthNumber = "01";
+        break;
+
+        case "fevereiro":
+            monthNumber = "02";
+        break;
+
+        case "março":
+            monthNumber = "03";
+        break;
+
+        case "abril":
+            monthNumber = "04";
+        break;
+
+        case "maio":
+            monthNumber = "05";
+        break;
+
+        case "junho":
+            monthNumber = "06";
+        break;
+
+        case "julho":
+            monthNumber = "07";
+        break;
+
+        case "agosto":
+            monthNumber = "08";
+        break;
+
+        case "setembro":
+            monthNumber = "09";
+        break;
+
+        case "outubro":
+            monthNumber = "10";
+        break;
+
+        case "novembro":
+            monthNumber = "11";
+        break;
+
+        case "dezembro":
+            monthNumber = "12";
+        break;
+
+        default: "";
+        break;
+    }
+
+    return monthNumber;
+
+    //return `O mês de ${monthName} é representado pelo número ${monthNumber}`;
+}
+
+console.log( getMonthNumber("Fevereiro") );
+console.log( getMonthNumber("Junho") );
+console.log( getMonthNumber("Outubro") );
 
 /*
 Agora, declare uma variável chamada `regexDate` que irá receber a expressão
@@ -79,7 +153,15 @@ meses que estão no texto, não precisa adicionar todos.
 Com o que vimos até agora, você consegue fazer :D
 Mostre a regex no console.
 */
-console.log( '\nRegex que vai fazer o match com as datas do texto:' );
+
+//14 de junho de 1999
+
+var regexDate = /(\d{2})\s(de)\s(\w*)\s(de)\s(\d{4})/g;
+
+console.log( '\nRegex que vai fazer o match com as datas do texto:' , text.replace(regexDate, function( allCaptures ){
+    return allCaptures;
+}) );
+
 // ?
 
 /*
@@ -90,4 +172,14 @@ Após criar a função, faça o replace das datas no texto, mostrando no
 console o resultado.
 */
 console.log( '\nReplace de datas:' );
-// ?
+
+function replaceDate(text){
+    text.replace(regexDate, function( allCaptures, day, separator, month, separator2, year ){
+        month = getMonthNumber(month);
+        return `${day}/${month}/${year}`;
+    });
+}
+
+console.log( replaceDate(text) );
+
+})();
